@@ -1,0 +1,51 @@
+SELECT
+    c.id,
+    c.card_number,
+    c.name,
+    t1.name AS type,
+    c.hp,
+    i.name AS illustrator,
+    c.rarity_id,
+    t2.name AS weakness,
+    t3.name AS resistance,
+    t4.name AS retreat,
+    e.name AS evolves_from_card,
+    GROUP_CONCAT(
+        'Attacke ' || (ca.attack_order + 1) || ': ' ||
+        a.name ||
+        CASE
+            WHEN a.damage IS NOT NULL THEN ' (' || a.damage || ')'
+            ELSE ''
+        END ||
+        CASE
+            WHEN ca.energy_cost IS NOT NULL THEN ' [' || ca.energy_cost || ']'
+            ELSE ''
+        END ||
+        CASE
+            WHEN a.description IS NOT NULL THEN ' - ' || a.description
+            ELSE ''
+        END,
+        ' || '
+    ) AS attacks
+FROM card c
+LEFT JOIN type t1 ON c.type_id = t1.id
+LEFT JOIN type t2 ON c.type_weakness_id = t2.id
+LEFT JOIN type t3 ON c.type_resistance_id = t3.id
+LEFT JOIN type t4 ON c.type_retreat_id = t4.id
+LEFT JOIN illustrator i ON c.illustrator_id = i.id
+LEFT JOIN card e ON c.evolves_from_card_id = e.id
+LEFT JOIN card_attack ca ON c.id = ca.card_id
+LEFT JOIN attack a ON ca.attack_id = a.id
+GROUP BY
+    c.id,
+    c.card_number,
+    c.name,
+    t1.name,
+    c.hp,
+    i.name,
+    c.rarity_id,
+    t2.name,
+    t3.name,
+    t4.name,
+    e.name
+ORDER BY c.id;

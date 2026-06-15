@@ -1,0 +1,10 @@
+Projektplanung: Was war euer MUSS/SOLL/KANN – und welche Entscheidung hat euch am meisten geholfen, im Zeitrahmen zu bleiben?
+Datenmodellierung: Welche Entitäten habt ihr gewählt – und warum genau diese (und nicht alles in eine Tabelle)?
+Kardinalitäten: Nennt eine Beziehung aus eurem Modell und erklärt die Kardinalität (1:1 / 1:n / n:m). Wie habt ihr das technisch in Tabellen umgesetzt?
+Normalisierung: Gebt ein Beispiel, wo ihr Redundanz vermieden habt (z. B. Seltenheit/IUCN-Status/Typ/Illustrator). Welche Probleme hättet ihr ohne Normalisierung bekommen?
+Schlüssel: Was ist bei euch Primärschlüssel, was Fremdschlüssel – und wie stellen die FKs die Beziehungen zwischen Tabellen her?
+Datenqualität: Welche Constraints (NOT NULL, UNIQUE, CHECK) nutzt ihr – und welchen konkreten Fehler verhindert jeder davon?
+SQL-Kompetenz: Zeigt eine Abfrage mit JOIN und erklärt Schritt für Schritt, was sie macht (inkl. warum ihr genau diese Join-Bedingung verwendet).
+Auswertung: Zeigt eine Statistik-Abfrage mit GROUP BY (und ggf. HAVING). Welche Aussage gewinnt man daraus für euer Thema?
+Testen & Debuggen: Wie habt ihr überprüft, dass eure DB „stimmt“? (z. B. Smoke-Test-Abfragen, Testdatensatz, typische Bug-Fälle, PRAGMA foreign_keys).
+Softwareentwicklung/Reflexion: Wenn ihr das Projekt nochmal machen würdet: Welche Architektur-/Modellentscheidung würdet ihr ändern (und warum)? Was wäre euer nächster sinnvoller Schritt (Feature, Performance, Datenimport, UI)?

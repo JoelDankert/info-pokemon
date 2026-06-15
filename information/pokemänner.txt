@@ -1,0 +1,44 @@
+digdra
+digdri
+zigzachs
+ultrigaria
+waumpel
+camaub
+camerupt
+flampion
+enton
+gelatini
+gelatroppo
+gelatwino
+voltoball
+flunschlik
+banette
+owei
+kokowei
+pam-pam
+nebulak
+mega glurak y ex (der goldene)
+duflor
+
+
+MUSS:
+Name
+Nummer
+Type
+HP
+Attacken
+
+SOLL:
+Illustrator
+Rarity
+Evolution
+
+KANN:
+Price
+Weakness
+Resistance
+Retreat
+
+rarity 1:n card
+illustrator 1:n card
+card n:m attack
