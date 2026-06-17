@@ -335,8 +335,39 @@
   \end{panel}
 \end{frame}
 
-\begin{frame}[fragile]{SQL-Kompetenz: JOIN-Abfrage}
-  \begin{minipage}[t]{0.56\textwidth}
+\begin{frame}{SQL-Abfragen: roter Faden}
+  \begin{panel}[colback=softblue,colframe=blue!35]
+    {\Large\bfseries Jede Abfrage zeigt einen anderen Nutzen des Datenmodells.}
+  \end{panel}
+  \vspace{0.35cm}
+  \begin{minipage}[t]{0.24\textwidth}
+    \begin{panel}[height=4.3cm]
+      {\bfseries 1 JOIN}\par
+      \small Kartenansicht aus mehreren Tabellen zusammensetzen.
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.24\textwidth}
+    \begin{panel}[height=4.3cm]
+      {\bfseries 2 GROUP BY}\par
+      \small Typen z\"ahlen und Durchschnittswerte bilden.
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.24\textwidth}
+    \begin{panel}[height=4.3cm]
+      {\bfseries 3 HAVING}\par
+      \small Gruppen nach berechneten Ergebnissen filtern.
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.24\textwidth}
+    \begin{panel}[height=4.3cm]
+      {\bfseries 4 SELF JOIN}\par
+      \small Evolutionen innerhalb der Kartentabelle auswerten.
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile,shrink=5]{Abfrage 1: Gesamtansicht einer Karte}
+  \begin{minipage}[t]{0.55\textwidth}
     \begin{panel}
 \begin{lstlisting}
 SELECT
@@ -354,34 +385,39 @@ ORDER BY c.id;
 \end{lstlisting}
     \end{panel}
   \end{minipage}\hfill
-  \begin{minipage}[t]{0.40\textwidth}
+  \begin{minipage}[t]{0.41\textwidth}
     \begin{panel}[colback=softblue,colframe=blue!35]
-      {\bfseries Schritt f\"ur Schritt}\par
+      {\bfseries Ergebnis}\par
       \begin{itemize}
-        \item Start in \texttt{card}: hier steht jede Karte.
-        \item \texttt{type}: Join \"uber \texttt{type.id = card.type\_id}.
-        \item \texttt{illustrator}: Join \"uber \texttt{illustrator.id = card.illustrator\_id}.
-        \item \texttt{rarity}: Join \"uber \texttt{rarity.id = card.rarity\_id}.
+        \item 21 lesbare Kartenzeilen
+        \item Pflichtdaten plus Typ, Illustrator und Rarit\"at
+        \item Beispiel: \textbf{Camerupt}, Feuer, 140 HP, Uncommon
       \end{itemize}
+      \vspace{0.2em}
+      \small\color{muted}Die ausgelagerten Tabellen lassen sich wieder zu einer kompakten Kartenansicht verbinden.
     \end{panel}
   \end{minipage}
 \end{frame}
 
-\begin{frame}{Warum genau diese JOIN-Bedingungen?}
+\begin{frame}{Abfrage 1: Warum genau diese JOINs?}
   \begin{panel}
-    \begin{tabularx}{\linewidth}{@{}L{0.28\linewidth}Y Y@{}}
+    \begin{tabularx}{\linewidth}{@{}L{0.27\linewidth}Y Y@{}}
       \toprule
-      \textbf{Join-Bedingung} & \textbf{Warum korrekt?} & \textbf{was w\"are falsch?} \\
+      \textbf{Join-Bedingung} & \textbf{Bedeutung} & \textbf{warum nicht anders?} \\
       \midrule
-      \texttt{t.id = c.type\_id} & \texttt{type.id} ist der eindeutige Datensatz, \texttt{card.type\_id} speichert den Verweis. & Join \"uber Textnamen w\"are anf\"allig f\"ur Schreibweisen. \\
-      \texttt{i.id = c.illustrator\_id} & trennt Kartendaten und Illustratornamen sauber. & Illustrator direkt in jeder Karte erzeugt Redundanz. \\
-      \texttt{r.id = c.rarity\_id} & Rarit\"at wird als kontrollierte Kategorie gespeichert. & Freitext-Rarit\"aten w\"urden Statistikfehler erzeugen. \\
+      \texttt{t.id = c.type\_id} & verbindet Karte mit kontrolliertem Typdatensatz & Textvergleich w\"are anf\"allig f\"ur Schreibfehler \\
+      \texttt{i.id = c.illustrator\_id} & holt den Namen aus \texttt{illustrator} & Illustratorname m\"usste sonst in jeder Karte stehen \\
+      \texttt{r.id = c.rarity\_id} & holt die Seltenheitsstufe aus \texttt{rarity} & Freitext-Rarit\"aten w\"urden Statistiken verf\"alschen \\
       \bottomrule
     \end{tabularx}
   \end{panel}
+  \vspace{0.35cm}
+  \begin{panel}[colback=softgold,colframe=gold!45]
+    {\bfseries \"Uberleitung:} Wenn eine Einzelkarte sauber rekonstruierbar ist, kann man im n\"achsten Schritt alle Karten zusammen statistisch auswerten.
+  \end{panel}
 \end{frame}
 
-\begin{frame}[fragile]{Auswertung: GROUP BY und Aussage}
+\begin{frame}[fragile]{Abfrage 2: Typverteilung mit GROUP BY}
   \begin{minipage}[t]{0.50\textwidth}
     \begin{panel}
 \begin{lstlisting}
@@ -398,7 +434,7 @@ ORDER BY cards DESC, t.name;
   \end{minipage}\hfill
   \begin{minipage}[t]{0.46\textwidth}
     \begin{panel}[colback=softgold,colframe=gold!45]
-      {\bfseries Ergebnis als Tabelle}\par
+      {\bfseries Ergebnis}\par
       \vspace{0.2em}
       \begin{tabularx}{\linewidth}{@{}Yrr@{}}
         \toprule
@@ -417,7 +453,30 @@ ORDER BY cards DESC, t.name;
   \end{minipage}
 \end{frame}
 
-\begin{frame}[fragile]{Auswertung: HAVING f\"ur Attacken}
+\begin{frame}{Abfrage 2: Aussage der Statistik}
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}[colback=softgreen,colframe=green!40,height=5.4cm]
+      {\bfseries Was gewinnt man daraus?}\par
+      \begin{itemize}
+        \item Feuer und Wasser sind am h\"aufigsten vertreten.
+        \item Feuer hat im Datensatz den h\"ochsten durchschnittlichen HP-Wert.
+        \item Die Typ-Tabelle macht Gruppierung sauber, weil Typen nicht als Freitext verstreut sind.
+      \end{itemize}
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}[colback=softblue,colframe=blue!35,height=5.4cm]
+      {\bfseries \"Uberleitung}\par
+      \begin{itemize}
+        \item \texttt{GROUP BY} fasst Datens\"atze zusammen.
+        \item Danach kann man mit \texttt{HAVING} genau diese Gruppen filtern.
+        \item Das ist passend f\"ur Fragen wie: Welche Karten haben genau zwei Attacken?
+      \end{itemize}
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Abfrage 3: Karten mit genau zwei Attacken}
   \begin{minipage}[t]{0.50\textwidth}
     \begin{panel}
 \begin{lstlisting}
@@ -435,14 +494,100 @@ ORDER BY c.hp DESC, c.name;
   \end{minipage}\hfill
   \begin{minipage}[t]{0.46\textwidth}
     \begin{panel}[colback=softgreen,colframe=green!40]
+      {\bfseries Ergebnis: 8 Treffer}\par
+      \vspace{0.2em}
+      \begin{tabularx}{\linewidth}{@{}YY@{}}
+        Ns Gelatwino & Ns Gelatroppo \\
+        Camerupt & Erikas Ultrigaria \\
+        Team Rockets Kokowei & Banette \\
+        Team Rockets Digdri & Ns Flampion \\
+      \end{tabularx}
+      \vspace{0.35em}
+      \small\color{muted}\texttt{HAVING} filtert erst nach dem Z\"ahlen. Genau daf\"ur braucht man die Gruppierung pro Karte.
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Abfrage 3: Warum das Modell hier hilft}
+  \begin{panel}[colback=softgold,colframe=gold!45]
+    {\Large\bfseries Die Zwischentabelle macht Attacken flexibel.}
+  \end{panel}
+  \vspace{0.35cm}
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}
+      {\bfseries Mit \texttt{card\_attack}}\par
+      \begin{itemize}
+        \item beliebig viele Attacken pro Karte m\"oglich
+        \item Z\"ahlen mit \texttt{COUNT(*)}
+        \item Filtern mit \texttt{HAVING}
+      \end{itemize}
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}
+      {\bfseries Ohne Zwischentabelle}\par
+      \begin{itemize}
+        \item feste Spalten wie \texttt{attack1}, \texttt{attack2}
+        \item schwieriger bei drei oder mehr Attacken
+        \item schlechtere Statistikabfragen
+      \end{itemize}
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Abfrage 4: Evolutionen per Self Join}
+  \begin{minipage}[t]{0.50\textwidth}
+    \begin{panel}
+\begin{lstlisting}
+SELECT
+  c.name AS card,
+  e.name AS evolves_from
+FROM card c
+LEFT JOIN card e
+  ON e.id = c.evolves_from_card_id
+WHERE c.evolves_from_card_id IS NOT NULL
+ORDER BY c.id;
+\end{lstlisting}
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.46\textwidth}
+    \begin{panel}[colback=softblue,colframe=blue!35]
+      {\bfseries Ergebnis}\par
+      \vspace{0.2em}
+      \begin{tabularx}{\linewidth}{@{}YY@{}}
+        \toprule
+        Karte & entwickelt aus \\
+        \midrule
+        Digdri & Digda \\
+        Camerupt & Camaub \\
+        Gelatroppo & Gelatini \\
+        Gelatwino & Gelatroppo \\
+        Kokowei & Owei \\
+        \bottomrule
+      \end{tabularx}
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Abfrage 4: Aussage und \"Uberleitung}
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}[colback=softgreen,colframe=green!40,height=5.2cm]
       {\bfseries Aussage}\par
       \begin{itemize}
-        \item 8 von 21 Karten besitzen genau zwei Attacken.
-        \item \texttt{HAVING} filtert nach dem Gruppieren.
-        \item Die Zwischentabelle \texttt{card\_attack} macht diese Auswertung einfach.
+        \item 5 echte Evolutions-Links sind verkn\"upft.
+        \item Die Tabelle \texttt{card} wird mit sich selbst verbunden.
+        \item Dadurch braucht man keine eigene Evolutionstabelle f\"ur diesen einfachen Fall.
       \end{itemize}
-      \vspace{0.2em}
-      \small\color{muted}Ohne Zwischentabelle w\"are die Abfrage deutlich unflexibler.
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}[colback=softred,colframe=accent!40,height=5.2cm]
+      {\bfseries Grenze der Daten}\par
+      \begin{itemize}
+        \item Im Rohdatensatz gibt es 9 Entwicklungskarten.
+        \item Nur 5 konnten sauber auf vorhandene Karten zeigen.
+        \item Das leitet direkt zu Datenqualit\"at und Tests \"uber.
+      \end{itemize}
     \end{panel}
   \end{minipage}
 \end{frame}
