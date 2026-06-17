@@ -4,68 +4,45 @@
 \usepackage[T1]{fontenc}
 \usepackage[main=ngerman,provide=*]{babel}
 \usepackage{lmodern}
-\usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{tabularx}
-\usepackage{multirow}
 \usepackage{listings}
 \usepackage[most]{tcolorbox}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta,calc,fit,positioning,shapes.geometric}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
 \usepackage{hyperref}
 
-\hypersetup{
-  colorlinks=true,
-  urlcolor=black,
-  linkcolor=black
-}
+\hypersetup{colorlinks=true,urlcolor=black,linkcolor=black}
 
-\definecolor{paper}{RGB}{247,245,239}
-\definecolor{ink}{RGB}{25,34,52}
-\definecolor{muted}{RGB}{105,114,128}
-\definecolor{accent}{RGB}{214,70,58}
-\definecolor{accentgold}{RGB}{231,180,55}
-\definecolor{accentblue}{RGB}{46,113,188}
-\definecolor{accentmint}{RGB}{88,151,141}
-\definecolor{soft}{RGB}{223,229,238}
-\definecolor{softgold}{RGB}{246,236,204}
+\definecolor{paper}{RGB}{248,247,243}
+\definecolor{ink}{RGB}{26,32,44}
+\definecolor{muted}{RGB}{97,106,123}
+\definecolor{accent}{RGB}{199,63,48}
+\definecolor{blue}{RGB}{43,96,151}
+\definecolor{green}{RGB}{63,125,111}
+\definecolor{gold}{RGB}{180,130,35}
+\definecolor{line}{RGB}{219,224,232}
+\definecolor{softblue}{RGB}{232,239,248}
+\definecolor{softred}{RGB}{250,236,232}
+\definecolor{softgreen}{RGB}{233,244,240}
+\definecolor{softgold}{RGB}{248,240,219}
 
 \setbeamercolor{normal text}{fg=ink,bg=paper}
 \setbeamercolor{frametitle}{fg=ink,bg=paper}
-\setbeamercolor{title}{fg=ink}
-\setbeamercolor{subtitle}{fg=muted}
-\setbeamercolor{structure}{fg=accentblue}
+\setbeamercolor{structure}{fg=blue}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{headline}{}
-\setbeamertemplate{itemize item}{\color{accent}\scriptsize$\blacksquare$}
-\setbeamertemplate{itemize subitem}{\color{accentblue}\scriptsize$\blacktriangleright$}
-
-\setbeamerfont{title}{series=\bfseries,size=\fontsize{26}{28}\selectfont}
-\setbeamerfont{subtitle}{size=\Large}
+\setbeamersize{text margin left=0.78cm,text margin right=0.78cm}
 \setbeamerfont{frametitle}{series=\bfseries,size=\Large}
-\setbeamersize{text margin left=0.7cm,text margin right=0.7cm}
-
-\setbeamertemplate{background}{
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[paper] (current page.south west) rectangle (current page.north east);
-    \fill[soft!70] ([xshift=-1.6cm,yshift=-1.2cm]current page.north east) circle (2.3cm);
-    \fill[softgold!85!paper] ([xshift=-2.3cm,yshift=1.4cm]current page.south east) circle (1.2cm);
-    \fill[accentblue!10] ([xshift=0.8cm,yshift=-3.0cm]current page.north west) circle (1.3cm);
-    \fill[accentblue] ([xshift=0.20cm]current page.south west) rectangle ([xshift=0.34cm]current page.north west);
-  \end{tikzpicture}
-}
+\setbeamertemplate{itemize item}{\color{accent}\scriptsize$\blacksquare$}
 
 \setbeamertemplate{footline}{
   \leavevmode
   \hbox{
-    \begin{beamercolorbox}[wd=.82\paperwidth,ht=3.0ex,dp=1.2ex,leftskip=.9cm]{author in head/foot}
+    \begin{beamercolorbox}[wd=.78\paperwidth,ht=3.0ex,dp=1.2ex,leftskip=.8cm]{author in head/foot}
       \color{muted}\small Pokemon-Datenbankprojekt
     \end{beamercolorbox}
-    \begin{beamercolorbox}[wd=.18\paperwidth,ht=3.0ex,dp=1.2ex,rightskip=.9cm]{date in head/foot}
-      \color{muted}\small \insertframenumber/\inserttotalframenumber
+    \begin{beamercolorbox}[wd=.22\paperwidth,ht=3.0ex,dp=1.2ex,rightskip=.8cm]{date in head/foot}
+      \color{muted}\small \hfill \insertframenumber/\inserttotalframenumber
     \end{beamercolorbox}
   }
 }
@@ -73,52 +50,28 @@
 \newtcolorbox{panel}[1][]{
   enhanced,
   colback=white,
-  colframe=soft,
+  colframe=line,
   boxrule=0.7pt,
-  arc=4pt,
+  arc=3pt,
   left=8pt,
   right=8pt,
-  top=8pt,
-  bottom=8pt,
+  top=7pt,
+  bottom=7pt,
   #1
 }
 
-\newcommand{\statpanel}[3]{%
-  \begin{panel}[colframe=#3!40,height=2.55cm]
-    {\fontsize{20}{22}\selectfont\bfseries #1}\par
-    \vspace{0.25em}
+\newcommand{\tagbox}[3]{%
+  \begin{panel}[colback=#3,colframe=#2!45,height=1.55cm]
+    {\Large\bfseries #1}\par
     {\small\color{muted}#2}
   \end{panel}
 }
 
-\newcommand{\progressrow}[4]{%
-  \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
-    \textbf{#1} & {\small #2/#3}
-  \end{tabular*}\par
-  \begin{tikzpicture}[x=1cm,y=1cm]
-    \fill[soft] (0,0) rectangle (5.6,0.18);
-    \pgfmathsetmacro{\fillwidth}{5.6*(#2)/(#3)}
-    \fill[#4] (0,0) rectangle (\fillwidth,0.18);
-  \end{tikzpicture}
-  \vspace{0.45em}
-}
-
-\newcommand{\pokeball}[1][1.0]{%
-  \begin{tikzpicture}[scale=#1]
-    \draw[line width=1.6pt,draw=ink,fill=white] (0,0) circle (1);
-    \begin{scope}
-      \clip (0,0) circle (1);
-      \fill[accent] (-1.1,0) rectangle (1.1,1.1);
-    \end{scope}
-    \draw[line width=1.5pt,draw=ink] (-1,0) -- (1,0);
-    \fill[paper] (0,0) circle (0.33);
-    \draw[line width=1.4pt,draw=ink] (0,0) circle (0.33);
-    \fill[accentgold] (0,0) circle (0.12);
-  \end{tikzpicture}
-}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \lstdefinelanguage{SQL}{
-  morekeywords={SELECT,FROM,WHERE,JOIN,LEFT,RIGHT,INNER,OUTER,ON,AS,ORDER,BY,GROUP,HAVING,COUNT,AVG,ROUND,CASE,WHEN,THEN,ELSE,END,SUM,MAX,MIN,IS,NULL,NOT,AND,OR,DESC,ASC,DISTINCT},
+  morekeywords={SELECT,FROM,WHERE,JOIN,LEFT,ON,AS,ORDER,BY,GROUP,HAVING,COUNT,AVG,ROUND,IS,NOT,NULL,DESC,ASC,PRAGMA},
   sensitive=false,
   morecomment=[l]{--},
   morestring=[b]'
@@ -127,7 +80,7 @@
 \lstset{
   language=SQL,
   basicstyle=\ttfamily\scriptsize,
-  keywordstyle=\color{accentblue}\bfseries,
+  keywordstyle=\color{blue}\bfseries,
   commentstyle=\color{muted},
   stringstyle=\color{accent},
   showstringspaces=false,
@@ -138,303 +91,253 @@
 }
 
 \title{Pokemon-Datenbankprojekt}
-\subtitle{Planung, Datenmodell, SQL-Abfragen und Reflexion}
+\subtitle{Planung, Modellierung, SQL und Reflexion}
 \author{Robert, Joel, Berkay, Felix, David}
 \date{}
 
 \begin{document}
 
 \begin{frame}[plain]
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[ink] (current page.south west) rectangle ([xshift=.43\paperwidth]current page.north west);
-    \fill[accent] ([xshift=.43\paperwidth]current page.south west) rectangle ([xshift=.455\paperwidth]current page.north west);
-    \fill[accentgold] ([xshift=.455\paperwidth]current page.south west) rectangle ([xshift=.485\paperwidth]current page.north west);
-    \fill[softgold] ([xshift=.49\paperwidth]current page.south west) rectangle (current page.north east);
-    \fill[white,opacity=.40] ([xshift=-1.8cm,yshift=-1.8cm]current page.north east) circle (2.5cm);
-    \fill[accentblue!18] ([xshift=-3.4cm,yshift=1.2cm]current page.south east) circle (1.7cm);
-    \node[anchor=north west,align=left,text width=4.1cm] at ([xshift=0.9cm,yshift=-1.3cm]current page.north west) {\color{white}\fontsize{20}{22}\selectfont\bfseries Pokemon-\par Datenbankprojekt};
-    \node[anchor=north west,text width=5.0cm] at ([xshift=0.9cm,yshift=-4.9cm]current page.north west) {\color{white}\Large Von der Projektplanung bis zur SQL-Auswertung};
-    \node[anchor=south west] at ([xshift=0.9cm,yshift=1.2cm]current page.south west) {\color{white}\normalsize Team: Robert, Joel, Berkay, Felix, David};
-    \node[anchor=south west,text width=7.8cm] at ([xshift=0.9cm,yshift=0.55cm]current page.south west) {\color{white!80}\small Joel hat den Gro\ss teil der Umsetzung betreut und fehlt heute.};
-    \begin{scope}[shift={([xshift=.73\paperwidth,yshift=.6cm]current page.center)},scale=2.5]
-      \draw[line width=1.6pt,draw=ink,fill=white] (0,0) circle (1);
-      \begin{scope}
-        \clip (0,0) circle (1);
-        \fill[accent] (-1.1,0) rectangle (1.1,1.1);
-      \end{scope}
-      \draw[line width=1.5pt,draw=ink] (-1,0) -- (1,0);
-      \fill[paper] (0,0) circle (0.33);
-      \draw[line width=1.4pt,draw=ink] (0,0) circle (0.33);
-      \fill[accentgold] (0,0) circle (0.12);
-    \end{scope}
-    \node[anchor=north west,align=left,text width=4.7cm] at ([xshift=.54\paperwidth,yshift=-2.0cm]current page.north west) {\color{ink}\Large\bfseries Schwerpunkt\par\vspace{0.1em}sauberes Datenmodell, sinnvolle Normalisierung und nachvollziehbare Abfragen};
-  \end{tikzpicture}
-  \mbox{}
+  \vspace*{0.9cm}
+  {\fontsize{30}{34}\selectfont\bfseries Pokemon-Datenbankprojekt}\par
+  \vspace{0.35cm}
+  {\Large Planung, Datenmodell, SQL-Abfragen und Reflexion}\par
+  \vspace{0.8cm}
+  \begin{panel}[colback=softblue,colframe=blue!35]
+    \begin{minipage}[t]{0.31\textwidth}
+      {\bfseries Fokus}\par
+      \small Relationale Struktur statt Einzeltabelle
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.31\textwidth}
+      {\bfseries Datenbasis}\par
+      \small 21 Karten, 29 Attacken-Verknuepfungen
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.31\textwidth}
+      {\bfseries Ziel}\par
+      \small Abfragen erklaeren, Modellentscheidungen begruenden
+    \end{minipage}
+  \end{panel}
+  \vfill
+  {\small Team: Robert, Joel, Berkay, Felix, David}
 \end{frame}
 
-\begin{frame}{Agenda}
-  \begin{columns}[T,onlytextwidth]
-    \column{.24\textwidth}
-    \begin{panel}[colframe=accent!40,height=5.4cm]
-      {\large\bfseries 1. Projektplanung}\par
-      \vspace{0.4em}
-      \small
-      Rollen\\
-      MUSS / SOLL / KANN\\
-      Vorgehen im Zeitrahmen
-    \end{panel}
-    \column{.24\textwidth}
-    \begin{panel}[colframe=accentblue!40,height=5.4cm]
-      {\large\bfseries 2. Datenbankstruktur}\par
-      \vspace{0.4em}
-      \small
-      Tabellen\\
-      Kardinalit\"aten\\
-      Normalisierung
-    \end{panel}
-    \column{.24\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink,height=5.4cm]
-      {\large\bfseries 3. Abfragen}\par
-      \vspace{0.4em}
-      \small
-      JOIN\\
-      GROUP BY\\
-      SELF JOIN und HAVING
-    \end{panel}
-    \column{.24\textwidth}
-    \begin{panel}[colframe=accentmint!50!ink,height=5.4cm]
-      {\large\bfseries 4. N\"achster Durchlauf}\par
-      \vspace{0.4em}
-      \small
-      Datenl\"ucken\\
-      technische Verbesserungen\\
-      Ausblick
-    \end{panel}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Das Projekt in 30 Sekunden}
-  \begin{columns}[T,onlytextwidth]
-    \column{.24\textwidth}
-    \statpanel{21}{Karten in der Haupttabelle}{accent}
-    \column{.24\textwidth}
-    \statpanel{29}{Attacken in der n:m-Verkn\"upfung}{accentblue}
-    \column{.24\textwidth}
-    \statpanel{8}{Pokemon-Typen}{accentgold!80!ink}
-    \column{.24\textwidth}
-    \statpanel{6}{Rarit\"atsstufen}{accentmint!70!ink}
-  \end{columns}
-
-  \vspace{0.8em}
-  \begin{panel}[colframe=accentblue!35]
-    \begin{columns}[T,onlytextwidth]
-      \column{.56\textwidth}
-      {\large\bfseries Zielbild}\par
-      \vspace{0.35em}
-      \small
-      Eine kleine, aber sauber strukturierte Pokemon-Datenbank, in der Pflichtdaten direkt abrufbar sind und typische SQL-Techniken demonstriert werden k\"onnen.
-      \column{.40\textwidth}
-      {\large\bfseries Ergebnis}\par
-      \vspace{0.35em}
-      \small
-      Vollst\"andige Pflichtattribute, mehrere verkn\"upfte Hilfstabellen und genug Datenmaterial f\"ur Statistik-, Detail- und Beziehungsabfragen.
-    \end{columns}
+\begin{frame}[shrink=8]{Agenda}
+  \begin{panel}[colback=white]
+    \begin{tabularx}{\linewidth}{@{}L{0.08\linewidth}Y Y@{}}
+      \toprule
+      \textbf{Teil} & \textbf{Kapitel} & \textbf{Leitfrage} \\
+      \midrule
+      1 & Projektplanung & Was war MUSS/SOLL/KANN und welche Entscheidung hielt das Projekt im Zeitrahmen? \\
+      2 & Datenmodell & Welche Entit\"aten, Beziehungen, Schl\"ussel und Normalisierungsideen stecken im Modell? \\
+      3 & SQL & Welche JOIN-, GROUP-BY- und HAVING-Abfragen zeigen, dass das Modell funktioniert? \\
+      4 & Qualit\"at und Reflexion & Welche Tests, L\"ucken und Verbesserungen ergeben sich f\"ur eine zweite Version? \\
+      \bottomrule
+    \end{tabularx}
   \end{panel}
 \end{frame}
 
-\begin{frame}[shrink=6]{Projektplanung und Rollen}
-  \begin{columns}[T,onlytextwidth]
-    \column{.56\textwidth}
-    \begin{panel}[colframe=accent!35]
-      {\large\bfseries Rollenverteilung}\par
-      \vspace{0.3em}
-      \small
-      \begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
-        Robert & Projektplanung, Einleitung, Zeitrahmen erkl\"aren \\
-        Joel & Technische Hauptumsetzung, Datenimport, SQLverine-Struktur \\
-        Berkay & Datenmodell, Tabellen, Kardinalit\"aten \\
-        Felix & Abfragen 1 und 2 erkl\"aren \\
-        David & Abfragen 3 und 4, Reflexion, Ausblick \\
+\begin{frame}{Projektplanung: MUSS, SOLL, KANN}
+  \begin{minipage}[t]{0.32\textwidth}
+    \begin{panel}[colback=softred,colframe=accent!40,height=5.8cm]
+      {\Large\bfseries MUSS}\par
+      \vspace{0.4em}
+      \begin{itemize}
+        \item Name
+        \item Kartennummer
+        \item Typ
+        \item HP
+        \item Attacken
+      \end{itemize}
+      \vspace{0.25em}
+      \small\color{muted}Ohne diese Felder w\"are die Datenbank fachlich nicht vorzeigbar.
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \begin{panel}[colback=softblue,colframe=blue!40,height=5.8cm]
+      {\Large\bfseries SOLL}\par
+      \vspace{0.4em}
+      \begin{itemize}
+        \item Illustrator
+        \item Rarit\"at
+        \item Evolution
+      \end{itemize}
+      \vspace{0.25em}
+      \small\color{muted}Diese Felder machen das Modell interessanter und zeigen echte Beziehungen.
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \begin{panel}[colback=softgold,colframe=gold!55,height=5.8cm]
+      {\Large\bfseries KANN}\par
+      \vspace{0.4em}
+      \begin{itemize}
+        \item Preis
+        \item Schw\"ache
+        \item Resistenz
+        \item R\"uckzugskosten
+      \end{itemize}
+      \vspace{0.25em}
+      \small\color{muted}Diese Daten sind sinnvoll, aber nicht entscheidend f\"ur den Prototyp.
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Projektplanung: wichtigste Entscheidung}
+  \begin{panel}[colback=softblue,colframe=blue!35]
+    {\Large\bfseries Erst Pflichtdaten stabil, dann Erweiterungen.}
+  \end{panel}
+  \vspace{0.45cm}
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}
+      {\bfseries Warum das geholfen hat}\par
+      \begin{itemize}
+        \item Die Datenbank war fr\"uh abfragbar.
+        \item Fehler im Modell wurden vor der Abgabe sichtbar.
+        \item Zusatzfelder konnten weggelassen werden, ohne das Kernziel zu gef\"ahrden.
+      \end{itemize}
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{panel}
+      {\bfseries Konkrete Folge}\par
+      \begin{itemize}
+        \item 21 Karten haben Name, Nummer, Typ und HP vollst\"andig.
+        \item Attacken sind nicht nur Text, sondern separat modelliert.
+        \item Preis und Resistenz wurden als ehrliche L\"ucken dokumentiert.
+      \end{itemize}
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[shrink=9]{Datenmodellierung: Entit\"aten}
+  \begin{panel}
+    \small
+    \begin{tabularx}{\linewidth}{@{}L{0.18\linewidth}Y Y@{}}
+      \toprule
+      \textbf{Entit\"at} & \textbf{Was wird gespeichert?} & \textbf{Warum eigene Tabelle?} \\
+      \midrule
+      \texttt{card} & Nummer, Name, HP, Verweise & zentrale Entit\"at, jede Auswertung startet hier \\
+      \texttt{type} & Feuer, Wasser, Kampf usw. & Typnamen wiederholen sich bei vielen Karten \\
+      \texttt{rarity} & Common, Uncommon, Rare usw. & verhindert Schreibvarianten und Redundanz \\
+      \texttt{illustrator} & Name des Illustrators & Namen sollen nicht mehrfach als Freitext stehen \\
+      \texttt{attack} & Name, Schaden, Beschreibung & Attacken sind eigene Informationen \\
+      \texttt{card\_attack} & Karte, Attacke, Reihenfolge, Kosten & technische Umsetzung der mehrwertigen Attackenbeziehung \\
+      \bottomrule
+    \end{tabularx}
+  \end{panel}
+  \vspace{0.12cm}
+  \scriptsize\color{muted}Warum nicht eine Tabelle? Typen, Rarit\"aten, Illustratoren und Attackentexte w\"urden wiederholt und Korrekturen w\"aren fehleranf\"allig.
+\end{frame}
+
+\begin{frame}{Datenmodellierung: Tabellen\"ubersicht statt Diagramm}
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}[height=5.9cm]
+      {\bfseries Kerntabellen}\par
+      \vspace{0.25em}
+      \begin{tabularx}{\linewidth}{@{}L{0.32\linewidth}Y@{}}
+        \toprule
+        \textbf{Tabelle} & \textbf{wichtige Felder} \\
+        \midrule
+        \texttt{card} & \texttt{id}, \texttt{card\_number}, \texttt{name}, \texttt{hp}, FK-Felder \\
+        \texttt{attack} & \texttt{id}, \texttt{name}, \texttt{damage}, \texttt{description} \\
+        \texttt{card\_attack} & \texttt{card\_id}, \texttt{attack\_id}, \texttt{attack\_order}, \texttt{energy\_cost} \\
+        \bottomrule
       \end{tabularx}
     \end{panel}
-    \column{.40\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink]
-      {\large\bfseries Ablauf in 4 Phasen}\par
-      \vspace{0.6em}
-      \begin{tikzpicture}[x=1cm,y=1cm]
-        \draw[soft,line width=3pt] (0.3,5.4) -- (0.3,0.6);
-        \foreach \y/\title/\text in {
-          5.1/{1 Analyse}/{Rohdaten und Pflichtfelder kl\"aren},
-          3.9/{2 Modell}/{Tabellen und Schl\"ussel festlegen},
-          2.7/{3 SQL}/{Import, Joins, Testabfragen},
-          1.5/{4 Finish}/{Fehler pr\"ufen und pr\"asentieren}
-        }{
-          \fill[accentblue] (0.3,\y) circle (0.10);
-          \node[anchor=west,text width=5.0cm] at (0.7,\y) {{\bfseries \title}\\[-0.1em]\small \text};
-        }
-      \end{tikzpicture}
-
-      \vspace{0.4em}
-      \scriptsize
-      Wichtig: Pflichtfelder zuerst, fr\"uh testen, Zusatzdaten danach.
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}[height=5.9cm]
+      {\bfseries Nachschlagetabellen}\par
+      \vspace{0.25em}
+      \begin{tabularx}{\linewidth}{@{}L{0.36\linewidth}Y@{}}
+        \toprule
+        \textbf{Tabelle} & \textbf{Rolle im Modell} \\
+        \midrule
+        \texttt{type} & wiederverwendbare Typnamen \\
+        \texttt{rarity} & wiederverwendbare Seltenheitsstufen \\
+        \texttt{illustrator} & wiederverwendbare Namen \\
+        \texttt{card} auf \texttt{card} & Evolution als Selbstbezug \\
+        \bottomrule
+      \end{tabularx}
     \end{panel}
-  \end{columns}
+  \end{minipage}
 \end{frame}
 
-\begin{frame}{MUSS, SOLL, KANN}
-  \begin{columns}[T,onlytextwidth]
-    \column{.31\textwidth}
-    \begin{panel}[colframe=accent!35,height=6.2cm]
-      {\large\bfseries MUSS}\par
-      \vspace{0.35em}
-      \small
-      Name\\
-      Kartennummer\\
-      Typ\\
-      HP\\
-      Attacken
-
-      \vspace{1em}
-      \color{muted}Diese Felder mussten f\"ur jede Karte direkt auswertbar sein.
-    \end{panel}
-    \column{.31\textwidth}
-    \begin{panel}[colframe=accentblue!35,height=6.2cm]
-      {\large\bfseries SOLL}\par
-      \vspace{0.35em}
-      \small
-      Illustrator\\
-      Rarit\"at\\
-      Evolution
-
-      \vspace{1em}
-      \color{muted}Diese Infos machen die DB deutlich interessanter, waren aber nicht ganz so kritisch wie die Kerndaten.
-    \end{panel}
-    \column{.31\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink,height=6.2cm]
-      {\large\bfseries KANN}\par
-      \vspace{0.35em}
-      \small
-      Preis\\
-      Schw\"ache\\
-      Resistenz\\
-      R\"uckzugskosten
-
-      \vspace{1em}
-      \color{muted}Hier haben wir bewusst priorisiert, damit die Grundstruktur zuerst stabil steht.
-    \end{panel}
-  \end{columns}
+\begin{frame}[shrink=12]{Kardinalit\"aten: Beziehungen im Modell}
+  \begin{panel}
+    \small
+    \begin{tabularx}{\linewidth}{@{}L{0.20\linewidth}L{0.12\linewidth}Y Y@{}}
+      \toprule
+      \textbf{Beziehung} & \textbf{Kardinalit\"at} & \textbf{Bedeutung} & \textbf{technische Umsetzung} \\
+      \midrule
+      Typ zu Karte & 1:n & Ein Typ kann bei vielen Karten vorkommen. & \texttt{card.type\_id} zu \texttt{type.id}. \\
+      Rarit\"at zu Karte & 1:n & Eine Seltenheit gilt f\"ur viele Karten. & \texttt{card.rarity\_id} zu \texttt{rarity.id}. \\
+      Karte zu Attacke & n:m & Eine Karte kann mehrere Attacken haben. & \texttt{card\_attack} mit \texttt{card\_id} und \texttt{attack\_id}. \\
+      Karte zu Vorentwicklung & Selbstbezug & Eine Karte kann sich aus einer anderen Karte entwickeln. & \texttt{evolves\_from\_card\_id} zu \texttt{card.id}. \\
+      \bottomrule
+    \end{tabularx}
+  \end{panel}
 \end{frame}
 
-\begin{frame}[shrink=5]{Datenbasis und Importpfad}
-  \begin{columns}[T,onlytextwidth]
-    \column{.64\textwidth}
-    \begin{panel}[colframe=accentblue!35]
-      {\large\bfseries Vom Rohdatensatz zur relationalen Struktur}\par
-      \vspace{0.5em}
-      \begin{tikzpicture}[node distance=0.55cm, every node/.style={align=center}]
-        \node[draw=soft,fill=white,rounded corners=4pt,minimum width=2.6cm,minimum height=1.0cm] (raw) {\bfseries Rohdaten\\\small CSV};
-        \node[draw=soft,fill=white,rounded corners=4pt,minimum width=3.0cm,minimum height=1.0cm,right=0.45cm of raw] (split) {\bfseries Zerlegung\\\small Typ, Seltenheit, Attacken};
-        \node[draw=soft,fill=white,rounded corners=4pt,minimum width=2.8cm,minimum height=1.0cm,right=0.45cm of split] (sql) {\bfseries SQLverine\\\small SQLite-DB};
-        \draw[-{Latex[length=2.5mm]},line width=1.2pt,draw=accentblue] (raw) -- (split);
-        \draw[-{Latex[length=2.5mm]},line width=1.2pt,draw=accentblue] (split) -- (sql);
-      \end{tikzpicture}
-
-      \vspace{0.55em}
-      \small
-      Der Rohdatensatz war textlastig. Deshalb wurden wiederkehrende Angaben ausgelagert und Attacken \"uber eine Zwischentabelle modelliert statt als Freitext stehen zu lassen.
-    \end{panel}
-    \column{.32\textwidth}
-    \begin{panel}[colframe=accent!35]
-      {\fontsize{18}{20}\selectfont\bfseries 21}\par
-      {\small\color{muted}Zeilen in \texttt{card}}
-    \end{panel}
-    \vspace{0.25em}
-    \begin{panel}[colframe=accentblue!35]
-      {\fontsize{18}{20}\selectfont\bfseries 29}\par
-      {\small\color{muted}Verkn\"upfungen in \texttt{card\_attack}}
-    \end{panel}
-    \vspace{0.25em}
-    \begin{panel}[colframe=accentmint!45!ink]
-      {\fontsize{18}{20}\selectfont\bfseries 5}\par
-      {\small\color{muted}echte Evolutions-Links}
-    \end{panel}
-  \end{columns}
-\end{frame}
-
-\begin{frame}[shrink=8]{Relationale Struktur der Datenbank}
-  \begin{columns}[T,onlytextwidth]
-    \column{.70\textwidth}
-    \begin{panel}[colframe=accentblue!35]
-      \centering
-      \scalebox{0.82}{%
-      \begin{tikzpicture}[
-        entity/.style={draw=ink,rounded corners=5pt,fill=white,minimum width=3.0cm,minimum height=1.55cm,align=center},
-        smallentity/.style={entity,minimum width=2.4cm,minimum height=1.35cm},
-        link/.style={-{Latex[length=2.4mm]},line width=1.0pt,draw=accentblue}
-      ]
-        \node[entity,fill=accent!10,draw=accent] (card) at (0,0) {\textbf{card}\\\scriptsize id, name, card\_number, hp\\\scriptsize type\_id, illustrator\_id, rarity\_id};
-        \node[smallentity] (type) at (0,2.3) {\textbf{type}\\\scriptsize id, name};
-        \node[smallentity] (illu) at (-4.0,-2.1) {\textbf{illustrator}\\\scriptsize id, name};
-        \node[smallentity] (rarity) at (4.0,-2.1) {\textbf{rarity}\\\scriptsize id, name};
-        \node[smallentity] (attack) at (4.5,2.3) {\textbf{attack}\\\scriptsize id, name, damage, description};
-        \node[smallentity,fill=accentblue!8,draw=accentblue] (ca) at (2.1,0.95) {\textbf{card\_attack}\\\scriptsize card\_id, attack\_id\\\scriptsize attack\_order, energy\_cost};
-
-        \draw[link] (type) -- node[right,fill=paper,inner sep=1pt]{\scriptsize 1:n} (card);
-        \draw[link] (illu) -- node[below,fill=paper,inner sep=1pt]{\scriptsize 1:n} (card);
-        \draw[link] (rarity) -- node[below,fill=paper,inner sep=1pt]{\scriptsize 1:n} (card);
-        \draw[link] (card) -- node[above,fill=paper,inner sep=1pt]{\scriptsize 1:n} (ca);
-        \draw[link] (attack) -- node[above,fill=paper,inner sep=1pt]{\scriptsize 1:n} (ca);
-        \draw[accent,line width=1.2pt,-{Latex[length=2.4mm]}] ([xshift=-0.8cm,yshift=-0.55cm]card.south) .. controls (-2.4,-2.9) and (-0.7,-3.8) .. node[below,fill=paper,inner sep=1pt]{\scriptsize Self Join} ([xshift=-0.1cm,yshift=-0.9cm]card.south);
-      \end{tikzpicture}
-      }
-    \end{panel}
-    \column{.26\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink]
-      {\large\bfseries Kerngedanken}\par
-      \vspace{0.3em}
-      \small
+\begin{frame}{Normalisierung: Redundanz vermeiden}
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}[colback=softgreen,colframe=green!40,height=5.85cm]
+      {\bfseries Beispiel: Rarit\"at und Typ}\par
       \begin{itemize}
-        \item Typ, Illustrator und Rarit\"at werden mehrfach genutzt und deshalb ausgelagert.
-        \item Mehrere Attacken werden \"uber \texttt{card\_attack} statt \"uber feste Spalten gespeichert.
-        \item Self Join f\"ur Evolutionen.
+        \item \texttt{Common}, \texttt{Uncommon}, \texttt{Rare} stehen in \texttt{rarity}.
+        \item \texttt{Feuer}, \texttt{Wasser}, \texttt{Kampf} stehen in \texttt{type}.
+        \item In \texttt{card} steht nur die jeweilige ID.
       \end{itemize}
     \end{panel}
-  \end{columns}
-\end{frame}
-
-\begin{frame}[shrink=8]{Normalisierung und bekannte L\"ucken}
-  \begin{columns}[T,onlytextwidth]
-    \column{.50\textwidth}
-    \begin{panel}[colframe=accent!35]
-      {\large\bfseries Normalisierung bringt hier direkt etwas}\par
-      \vspace{0.35em}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}[colback=softred,colframe=accent!40,height=5.85cm]
+      {\bfseries Problem ohne Normalisierung}\par
       \begin{itemize}
-        \item \texttt{type}, \texttt{rarity}, \texttt{illustrator}: keine redundanten Textkopien in jeder Zeile
-        \item \texttt{card\_attack}: saubere n:m-Beziehung statt mehrere Attackenspalten
-        \item \texttt{evolves\_from\_card\_id}: Entwicklung als Relation statt nur als Freitext
+        \item Tippfehler wie \texttt{Uncommen} w\"urden eigene Gruppen erzeugen.
+        \item \"Anderungen m\"ussten in vielen Kartenzeilen korrigiert werden.
+        \item Statistikabfragen w\"urden unzuverl\"assig.
+        \item Attacken als Spalten w\"aren unflexibel bei mehr oder weniger Attacken.
       \end{itemize}
-      \vspace{0.45em}
-      \small
-      Technisch fehlen noch echte \texttt{FOREIGN KEY}-, \texttt{NOT NULL}- und \texttt{CHECK}-Constraints.
     \end{panel}
-    \column{.46\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink]
-      {\large\bfseries Vollst\"andigkeit der Daten}\par
-      \vspace{0.5em}
-      \progressrow{Name}{21}{21}{accentblue}
-      \progressrow{Typ}{21}{21}{accentblue}
-      \progressrow{HP}{21}{21}{accentblue}
-      \progressrow{Resist.}{1}{21}{accentgold!80!ink}
-      \progressrow{Preis}{0}{21}{accent}
-      \progressrow{Evo-FK}{5}{9}{accentmint}
-    \end{panel}
-  \end{columns}
+  \end{minipage}
 \end{frame}
 
-\begin{frame}[fragile]{Abfrage 1: Gesamtansicht einer Karte}
-  \begin{columns}[T,onlytextwidth]
-    \column{.57\textwidth}
-    \begin{panel}[colframe=accentblue!35]
+\begin{frame}[shrink=8]{Schl\"ussel: Prim\"arschl\"ussel und Fremdschl\"ussel}
+  \begin{panel}
+    \begin{tabularx}{\linewidth}{@{}L{0.22\linewidth}Y Y@{}}
+      \toprule
+      \textbf{Kategorie} & \textbf{bei uns} & \textbf{Funktion} \\
+      \midrule
+      Prim\"arschl\"ussel & \texttt{id} in \texttt{card}, \texttt{type}, \texttt{rarity}, \texttt{illustrator}, \texttt{attack} & identifiziert jeden Datensatz eindeutig \\
+      logische Fremdschl\"ussel & z.B. \texttt{card.type\_id}, \texttt{card.rarity\_id}, \texttt{card.illustrator\_id} & verbinden Karte mit Nachschlagetabellen \\
+      Zwischenschl\"ussel & \texttt{card\_attack.card\_id} und \texttt{card\_attack.attack\_id} & verbinden Karten und Attacken \\
+      Selbstbezug & \texttt{card.evolves\_from\_card\_id} & bildet Evolutionsketten innerhalb derselben Tabelle ab \\
+      \bottomrule
+    \end{tabularx}
+  \end{panel}
+  \vspace{0.18cm}
+  \small\color{muted}Aktueller Stand: IDs sind vorhanden und inhaltlich konsistent. Echte \texttt{FOREIGN KEY}-Constraints fehlen noch.
+\end{frame}
+
+\begin{frame}[shrink=8]{Datenqualit\"at: Constraints und Wirkung}
+  \begin{panel}
+    \begin{tabularx}{\linewidth}{@{}L{0.18\linewidth}L{0.22\linewidth}Y@{}}
+      \toprule
+      \textbf{Constraint} & \textbf{aktueller Stand} & \textbf{welchen Fehler er verhindern w\"urde} \\
+      \midrule
+      \texttt{PRIMARY KEY} & vorhanden f\"ur zentrale Tabellen & doppelte oder nicht eindeutig adressierbare Datens\"atze \\
+      \texttt{FOREIGN KEY} & logisch genutzt, technisch nicht angelegt & Verweise auf nicht existierende Typen, Attacken oder Karten \\
+      \texttt{NOT NULL} & kaum konsequent gesetzt & Karten ohne Name, Typ, HP oder Nummer \\
+      \texttt{UNIQUE} & nicht konsequent gesetzt & doppelte Kartennummern oder doppelte Typnamen \\
+      \texttt{CHECK} & nicht genutzt & unplausible Werte wie negative HP oder leere Energiekosten \\
+      \bottomrule
+    \end{tabularx}
+  \end{panel}
+\end{frame}
+
+\begin{frame}[fragile]{SQL-Kompetenz: JOIN-Abfrage}
+  \begin{minipage}[t]{0.56\textwidth}
+    \begin{panel}
 \begin{lstlisting}
 SELECT
   c.card_number,
@@ -442,45 +345,45 @@ SELECT
   t.name AS type,
   c.hp,
   i.name AS illustrator,
-  r.name AS rarity,
-  GROUP_CONCAT(
-    a.name || ' [' || ca.energy_cost || ']',
-    ' | '
-  ) AS attacks
+  r.name AS rarity
 FROM card c
 JOIN type t ON t.id = c.type_id
 JOIN illustrator i ON i.id = c.illustrator_id
 JOIN rarity r ON r.id = c.rarity_id
-LEFT JOIN card_attack ca ON ca.card_id = c.id
-LEFT JOIN attack a ON a.id = ca.attack_id
-GROUP BY c.id
 ORDER BY c.id;
 \end{lstlisting}
     \end{panel}
-    \column{.39\textwidth}
-    \begin{panel}[colframe=accent!35]
-      {\large\bfseries Was zeigt die Abfrage?}\par
-      \vspace{0.35em}
-      \small
-      Alle Pflichtfelder plus wichtige Zusatzinfos in einer einzigen Ansicht.
-
-      \vspace{0.6em}
-      {\bfseries Beispiel: Camerupt}\par
-      \small
-      028/217\\
-      Feuer, 140 HP\\
-      Illustrator: Minahamu\\
-      Rarit\"at: Uncommon\\
-      Attacken: Bratendes Brennen, Kraftstampfer
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.40\textwidth}
+    \begin{panel}[colback=softblue,colframe=blue!35]
+      {\bfseries Schritt f\"ur Schritt}\par
+      \begin{itemize}
+        \item Start in \texttt{card}: hier steht jede Karte.
+        \item \texttt{type}: Join \"uber \texttt{type.id = card.type\_id}.
+        \item \texttt{illustrator}: Join \"uber \texttt{illustrator.id = card.illustrator\_id}.
+        \item \texttt{rarity}: Join \"uber \texttt{rarity.id = card.rarity\_id}.
+      \end{itemize}
     \end{panel}
-
-  \end{columns}
+  \end{minipage}
 \end{frame}
 
-\begin{frame}[fragile,shrink=6]{Abfrage 2: Welche Typen kommen wie oft vor?}
-  \begin{columns}[T,onlytextwidth]
-    \column{.43\textwidth}
-    \begin{panel}[colframe=accentblue!35]
+\begin{frame}{Warum genau diese JOIN-Bedingungen?}
+  \begin{panel}
+    \begin{tabularx}{\linewidth}{@{}L{0.28\linewidth}Y Y@{}}
+      \toprule
+      \textbf{Join-Bedingung} & \textbf{Warum korrekt?} & \textbf{was w\"are falsch?} \\
+      \midrule
+      \texttt{t.id = c.type\_id} & \texttt{type.id} ist der eindeutige Datensatz, \texttt{card.type\_id} speichert den Verweis. & Join \"uber Textnamen w\"are anf\"allig f\"ur Schreibweisen. \\
+      \texttt{i.id = c.illustrator\_id} & trennt Kartendaten und Illustratornamen sauber. & Illustrator direkt in jeder Karte erzeugt Redundanz. \\
+      \texttt{r.id = c.rarity\_id} & Rarit\"at wird als kontrollierte Kategorie gespeichert. & Freitext-Rarit\"aten w\"urden Statistikfehler erzeugen. \\
+      \bottomrule
+    \end{tabularx}
+  \end{panel}
+\end{frame}
+
+\begin{frame}[fragile]{Auswertung: GROUP BY und Aussage}
+  \begin{minipage}[t]{0.50\textwidth}
+    \begin{panel}
 \begin{lstlisting}
 SELECT
   t.name AS type,
@@ -492,181 +395,143 @@ GROUP BY t.name
 ORDER BY cards DESC, t.name;
 \end{lstlisting}
     \end{panel}
-    \column{.53\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink]
-      \centering
-      \begin{tikzpicture}
-        \begin{axis}[
-          width=\linewidth,
-          height=5.4cm,
-          ybar,
-          bar width=11pt,
-          ymin=0,
-          ymax=4.6,
-          symbolic x coords={Feuer,Wasser,Kampf,Pflanze,Psycho,Elektro,Finsternis},
-          xtick=data,
-          xticklabel style={font=\scriptsize,rotate=20,anchor=east},
-          ytick={0,1,2,3,4},
-          ylabel={Karten},
-          axis x line*=bottom,
-          axis y line*=left,
-          grid=major,
-          grid style={draw=soft},
-          tick style={draw=none},
-          nodes near coords,
-          every node near coord/.append style={font=\scriptsize}
-        ]
-          \addplot[fill=accentblue!70,draw=accentblue] coordinates {
-            (Feuer,4) (Wasser,4) (Kampf,3) (Pflanze,3)
-            (Psycho,3) (Elektro,2) (Finsternis,2)
-          };
-        \end{axis}
-      \end{tikzpicture}
-
-      \vspace{0.35em}
-      \small
-      Feuer und Wasser sind am h\"aufigsten vertreten. Feuer hat zugleich den h\"ochsten durchschnittlichen HP-Wert.
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.46\textwidth}
+    \begin{panel}[colback=softgold,colframe=gold!45]
+      {\bfseries Ergebnis als Tabelle}\par
+      \vspace{0.2em}
+      \begin{tabularx}{\linewidth}{@{}Yrr@{}}
+        \toprule
+        Typ & Karten & Ø HP \\
+        \midrule
+        Feuer & 4 & 165 \\
+        Wasser & 4 & 95 \\
+        Kampf & 3 & 77 \\
+        Pflanze & 3 & 80 \\
+        Psycho & 3 & 97 \\
+        Elektro & 2 & 140 \\
+        Finsternis & 2 & 70 \\
+        \bottomrule
+      \end{tabularx}
     \end{panel}
-  \end{columns}
+  \end{minipage}
 \end{frame}
 
-\begin{frame}[fragile,shrink=7]{Abfrage 3: Evolutionen per Self Join}
-  \begin{columns}[T,onlytextwidth]
-    \column{.48\textwidth}
-    \begin{panel}[colframe=accentblue!35]
-\begin{lstlisting}
-SELECT
-  c.name AS card,
-  e.name AS evolves_from
-FROM card c
-LEFT JOIN card e
-  ON e.id = c.evolves_from_card_id
-WHERE c.evolves_from_card_id IS NOT NULL
-ORDER BY c.id;
-\end{lstlisting}
-    \end{panel}
-    \column{.48\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink]
-      {\large\bfseries Fachlich wichtig}\par
-      \vspace{0.35em}
-      \small
-      Im Rohdatensatz gibt es 9 Entwicklungskarten. Davon sind nur 5 als echte Fremdschl\"ussel verkn\"upft, weil mehrere Vorstufen gar nicht in der Auswahl enthalten sind.
-
-      \vspace{0.6em}
-      {\bfseries Beispiele}\par
-      \small
-      Digda $\rightarrow$ Digdri\\
-      Camaub $\rightarrow$ Camerupt\\
-      Gelatini $\rightarrow$ Gelatroppo $\rightarrow$ Gelatwino\\
-      Owei $\rightarrow$ Kokowei
-    \end{panel}
-  \end{columns}
-\end{frame}
-
-\begin{frame}[fragile,shrink=6]{Abfrage 4: Karten mit genau zwei Attacken}
-  \begin{columns}[T,onlytextwidth]
-    \column{.50\textwidth}
-    \begin{panel}[colframe=accentblue!35]
+\begin{frame}[fragile]{Auswertung: HAVING f\"ur Attacken}
+  \begin{minipage}[t]{0.50\textwidth}
+    \begin{panel}
 \begin{lstlisting}
 SELECT
   c.name,
   COUNT(*) AS attacks,
   c.hp
 FROM card c
-JOIN card_attack ca
-  ON ca.card_id = c.id
+JOIN card_attack ca ON ca.card_id = c.id
 GROUP BY c.id
 HAVING COUNT(*) = 2
 ORDER BY c.hp DESC, c.name;
 \end{lstlisting}
     \end{panel}
-    \column{.46\textwidth}
-    \begin{panel}[colframe=accentgold!55!ink]
-      {\large\bfseries Trefferliste}\par
-      \vspace{0.35em}
-      \begin{columns}[T,onlytextwidth]
-        \column{.50\textwidth}
-        \small
-        Ns Gelatwino\\
-        Camerupt\\
-        Team Rockets Kokowei\\
-        Team Rockets Digdri
-        \column{.46\textwidth}
-        \small
-        Ns Gelatroppo\\
-        Erikas Ultrigaria\\
-        Banette\\
-        Ns Flampion
-      \end{columns}
-
-      \vspace{0.7em}
-      \small
-      8 von 21 Karten besitzen genau zwei Attacken. Gerade hier sieht man, warum \texttt{card\_attack} als Zwischentabelle flexibler ist als feste Spalten wie \texttt{attack1} und \texttt{attack2}.
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.46\textwidth}
+    \begin{panel}[colback=softgreen,colframe=green!40]
+      {\bfseries Aussage}\par
+      \begin{itemize}
+        \item 8 von 21 Karten besitzen genau zwei Attacken.
+        \item \texttt{HAVING} filtert nach dem Gruppieren.
+        \item Die Zwischentabelle \texttt{card\_attack} macht diese Auswertung einfach.
+      \end{itemize}
+      \vspace{0.2em}
+      \small\color{muted}Ohne Zwischentabelle w\"are die Abfrage deutlich unflexibler.
     \end{panel}
-  \end{columns}
+  \end{minipage}
 \end{frame}
 
-\begin{frame}[shrink=8]{Was w\"urden wir beim n\"achsten Mal verbessern?}
-  \begin{columns}[T,onlytextwidth]
-    \column{.48\textwidth}
-    \begin{panel}[colframe=accent!35]
-      {\large\bfseries Datenmodell}\par
-      \vspace{0.35em}
+\begin{frame}[fragile]{Testen und Debugging}
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}
+      {\bfseries Smoke Tests}\par
       \begin{itemize}
-        \item Set-Tabelle erg\"anzen statt nur Kartennummern zu speichern
-        \item Preis als eigenes Attribut oder Verlaufstabelle erg\"anzen
-        \item Alle Evolutionsvorstufen vollst\"andig importieren
-        \item Unbenutzte Tabelle \texttt{card\_new} bereinigen oder sinnvoll einsetzen
+        \item Anzahl der Karten: 21
+        \item Anzahl der Attacken-Verkn\"upfungen: 29
+        \item Pflichtfelder leer? Nein
+        \item doppelte Kartennummern? Nein
       \end{itemize}
-      \vspace{0.35em}
-      \small
-      Technik: echte \texttt{FOREIGN KEY}- und \texttt{NOT NULL}-Constraints, Importskript und feste Smoke Tests.
     \end{panel}
-    \column{.48\textwidth}
-    \begin{panel}[colframe=accentmint!45!ink]
-      {\large\bfseries Unser Fazit}\par
-      \vspace{0.45em}
-      \small
-      Die Datenbank ist f\"ur ein Schulprojekt schon gut nutzbar:
-      Pflichtdaten sind vollst\"andig, Joins funktionieren und die Kernbeziehungen sind nachvollziehbar modelliert.
-
-      \vspace{0.75em}
-      Der n\"achste professionelle Schritt w\"are aber klar:
-      \begin{itemize}
-        \item mehr Vollst\"andigkeit in den Zusatzdaten
-        \item mehr technische Sicherheit im Schema
-        \item mehr Automatisierung beim Import
-      \end{itemize}
-
-      \vspace{0.35em}
-      \centering
-      {\Large\bfseries Kleine Datenbasis, aber saubere Idee.}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}
+      {\bfseries Beispiel-Pr\"ufabfragen}\par
+\begin{lstlisting}
+SELECT COUNT(*) FROM card;
+SELECT COUNT(*) FROM card_attack;
+SELECT card_number
+FROM card
+GROUP BY card_number
+HAVING COUNT(*) > 1;
+PRAGMA foreign_key_list(card);
+\end{lstlisting}
     \end{panel}
-  \end{columns}
+  \end{minipage}
+  \vspace{0.25cm}
+  \small\color{muted}Ergebnis: Die Inhalte passen logisch zusammen, aber \texttt{PRAGMA foreign\_key\_list} zeigt keine technisch angelegten Fremdschl\"ussel.
 \end{frame}
 
-\begin{frame}[plain]
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[ink] (current page.south west) rectangle (current page.north east);
-    \fill[accent] ([xshift=1.1cm,yshift=1.1cm]current page.south west) rectangle ([xshift=1.45cm,yshift=1.45cm]current page.south west);
-    \fill[accentgold] ([xshift=1.55cm,yshift=1.1cm]current page.south west) rectangle ([xshift=1.90cm,yshift=1.45cm]current page.south west);
-    \fill[white,opacity=.08] ([xshift=-1.8cm,yshift=-1.2cm]current page.north east) circle (2.4cm);
-    \node[anchor=west] at ([xshift=1.4cm]current page.west) {\color{white}\fontsize{30}{32}\selectfont\bfseries Vielen Dank};
-    \node[anchor=west] at ([xshift=1.4cm,yshift=-1.2cm]current page.west) {\color{white!85}\Large Fragen?};
-    \begin{scope}[shift={([xshift=-2.2cm]current page.east)},scale=2.2]
-      \draw[line width=1.6pt,draw=ink,fill=white] (0,0) circle (1);
-      \begin{scope}
-        \clip (0,0) circle (1);
-        \fill[accent] (-1.1,0) rectangle (1.1,1.1);
-      \end{scope}
-      \draw[line width=1.5pt,draw=ink] (-1,0) -- (1,0);
-      \fill[paper] (0,0) circle (0.33);
-      \draw[line width=1.4pt,draw=ink] (0,0) circle (0.33);
-      \fill[accentgold] (0,0) circle (0.12);
-    \end{scope}
-    \node[anchor=south west] at ([xshift=1.4cm,yshift=0.8cm]current page.south west) {\color{white!70}\small Grundlage: \texttt{information/Haupt.db}, Rohdaten-CSV und eigene SQL-Abfragen};
-  \end{tikzpicture}
-  \mbox{}
+\begin{frame}{Datenl\"ucken: Was fehlt f\"ur eine bessere DB?}
+  \begin{panel}
+    \begin{tabularx}{\linewidth}{@{}L{0.24\linewidth}L{0.18\linewidth}Y@{}}
+      \toprule
+      \textbf{Datenbereich} & \textbf{Stand} & \textbf{Bedeutung} \\
+      \midrule
+      Pflichtfelder & vollst\"andig & Name, Nummer, Typ und HP sind bei allen 21 Karten vorhanden. \\
+      Resistenz & 1 von 21 & fachlich fast leer, deshalb nur vorsichtig auswertbar \\
+      Preis & 0 von 21 & als KANN-Anforderung nicht umgesetzt \\
+      Evolutionen & 5 echte Links bei 9 Entwicklungskarten & mehrere Vorstufen fehlen in der Auswahl \\
+      Constraints & teilweise nur logisch & Datenbank verhindert falsche Eingaben noch nicht selbst \\
+      \bottomrule
+    \end{tabularx}
+  \end{panel}
+\end{frame}
+
+\begin{frame}{Softwareentwicklung und Reflexion}
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}[colback=softred,colframe=accent!40,height=5.8cm]
+      {\bfseries Was w\"urden wir \"andern?}\par
+      \begin{itemize}
+        \item echte \texttt{FOREIGN KEY}-Constraints im Schema
+        \item \texttt{NOT NULL}, \texttt{UNIQUE}, \texttt{CHECK} konsequent setzen
+        \item \texttt{card\_new} entfernen oder sinnvoll integrieren
+        \item Importskript statt manueller Einpflege
+      \end{itemize}
+    \end{panel}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \begin{panel}[colback=softblue,colframe=blue!40,height=5.8cm]
+      {\bfseries N\"achster sinnvoller Schritt}\par
+      \begin{itemize}
+        \item Set-Tabelle mit Setname und Setnummer
+        \item Preis als eigenes Feld oder Verlaufstabelle
+        \item vollst\"andige Evolutionsketten importieren
+        \item kleine Such- oder Filteroberfl\"ache f\"ur Karten
+      \end{itemize}
+    \end{panel}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Fazit}
+  \begin{panel}[colback=softgreen,colframe=green!40]
+    {\Large\bfseries Die Grundstruktur funktioniert.}\par
+    \vspace{0.3em}
+    \large Pflichtdaten sind vollst\"andig, zentrale Beziehungen sind nachvollziehbar modelliert und SQL-Abfragen zeigen die Vorteile der Aufteilung.
+  \end{panel}
+  \vspace{0.4cm}
+  \begin{panel}[colback=softgold,colframe=gold!45]
+    {\Large\bfseries Die zweite Version w\"are technischer.}\par
+    \vspace{0.3em}
+    \large Mehr Constraints, automatischer Import, bessere Zusatzdaten und vollst\"andige Evolutionsketten.
+  \end{panel}
+  \vfill
+  \centering{\Large\bfseries Fragen?}
 \end{frame}
 
 \end{document}
